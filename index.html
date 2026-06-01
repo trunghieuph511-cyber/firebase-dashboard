@@ -293,7 +293,7 @@ onValue(ref(db, '/sensor'), snap => {
   updateVal('val-temp',  d.temp,  'bar-temp',  0,   50);
   updateVal('val-hum',   d.hum,   'bar-hum',   0,   100);
   updateVal('val-press', d.press, 'bar-press', 950, 1050);
-  updateVal('val-gas',   d.gas,   'bar-gas',   0,   500);
+  updateVal('val-gas',   d.gas,   'bar-gas',   0,   1000);
 
   updateCount++;
   const now = new Date().toLocaleTimeString('vi-VN');
