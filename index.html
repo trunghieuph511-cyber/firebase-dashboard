@@ -28,6 +28,8 @@ body::before {
 h1 { font-size: 13px; font-weight: 500; color: var(--text3); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
 .location { font-size: 15px; color: var(--text2); margin-bottom: 48px; display: flex; align-items: center; gap: 6px; }
 .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%; max-width: 520px; }
+
+/* 4 ô vuông trên */
 .card {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 20px; padding: 28px 24px 24px;
@@ -43,7 +45,7 @@ h1 { font-size: 13px; font-weight: 500; color: var(--text3); letter-spacing: 0.1
 .card.temp::before  { background: #ff9a3c; }
 .card.hum::before   { background: #4db8ff; }
 .card.press::before { background: #a78bfa; }
-.card.gas::before   { background: #34d399; }
+.card.dust::before  { background: #fb7185; }
 
 .icon-wrap {
   width: 52px; height: 52px; border-radius: 14px;
@@ -53,7 +55,7 @@ h1 { font-size: 13px; font-weight: 500; color: var(--text3); letter-spacing: 0.1
 .card.temp  .icon-wrap { background: rgba(255,154,60,0.12); }
 .card.hum   .icon-wrap { background: rgba(77,184,255,0.12); }
 .card.press .icon-wrap { background: rgba(167,139,250,0.12); }
-.card.gas   .icon-wrap { background: rgba(52,211,153,0.12); }
+.card.dust  .icon-wrap { background: rgba(251,113,133,0.12); }
 
 .label { font-size: 12px; font-weight: 500; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
 .value-row { display: flex; align-items: baseline; gap: 4px; }
@@ -62,19 +64,72 @@ h1 { font-size: 13px; font-weight: 500; color: var(--text3); letter-spacing: 0.1
 .card.temp  .value { color: #ff9a3c; }
 .card.hum   .value { color: #4db8ff; }
 .card.press .value { color: #a78bfa; }
-.card.gas   .value { color: #34d399; }
+.card.dust  .value { color: #fb7185; }
+
+/* Ô thứ 5 — Chất lượng không khí */
+.card-air {
+  grid-column: 1 / -1;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 28px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s, transform 0.2s;
+}
+.card-air:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.13); }
+.card-air::before {
+  content: ''; position: absolute; top: -40px; right: -40px;
+  width: 160px; height: 160px; border-radius: 50%; opacity: 0.1; filter: blur(50px);
+  background: #34d399;
+  transition: background 0.5s;
+}
+.card-air.Kem::before    { background: #f87171; }
+.card-air.Trung-binh::before { background: #fbbf24; }
+.card-air.Tot::before    { background: #34d399; }
+
+.air-left { display: flex; flex-direction: column; gap: 8px; }
+.air-label { font-size: 12px; font-weight: 500; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; }
+.air-value {
+  font-size: 32px; font-weight: 700; line-height: 1;
+  color: #34d399;
+  transition: color 0.5s;
+}
+.air-value.Kem    { color: #f87171; }
+.air-value.Trung-binh { color: #fbbf24; }
+.air-value.Tot    { color: #34d399; }
+
+.air-right { display: flex; align-items: center; gap: 12px; }
+.air-icon-wrap {
+  width: 64px; height: 64px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  background: rgba(52,211,153,0.12);
+  transition: background 0.5s;
+}
+.air-icon-wrap.Kem    { background: rgba(248,113,113,0.12); }
+.air-icon-wrap.Trung-binh { background: rgba(251,191,36,0.12); }
+.air-icon-wrap.Tot    { background: rgba(52,211,153,0.12); }
+
+/* Indicator dots */
+.air-dots { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+.dot-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text3); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text3); }
+.dot.active-tot    { background: #34d399; box-shadow: 0 0 6px #34d399; }
+.dot.active-tb     { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }
+.dot.active-kem    { background: #f87171; box-shadow: 0 0 6px #f87171; }
 
 @keyframes flashVal { 0%{opacity:0.4;transform:scale(0.95)} 100%{opacity:1;transform:scale(1)} }
 .value.updated { animation: flashVal 0.4s ease-out; }
+.air-value.updated { animation: flashVal 0.4s ease-out; }
 @keyframes shimmer { 0%{opacity:0.3} 50%{opacity:0.7} 100%{opacity:0.3} }
 .value.loading { animation: shimmer 1.2s ease-in-out infinite; color: var(--text3) !important; }
+.air-value.loading { animation: shimmer 1.2s ease-in-out infinite; color: var(--text3) !important; }
 
 .footer { margin-top: 40px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text3); font-family: 'Inter', sans-serif; }
 .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text3); transition: background 0.3s, box-shadow 0.3s; }
 .live-dot.on { background: #34d399; box-shadow: 0 0 8px #34d399; animation: blink 2s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-@media (max-width: 400px) { .grid { grid-template-columns: 1fr; } .value { font-size: 32px; } }
+@media (max-width: 400px) { .grid { grid-template-columns: 1fr; } .value { font-size: 32px; } .air-value { font-size: 26px; } }
 </style>
 </head>
 <body>
@@ -110,12 +165,28 @@ h1 { font-size: 13px; font-weight: 500; color: var(--text3); letter-spacing: 0.1
     </div>
   </div>
 
-  <div class="card gas">
-    <div class="icon-wrap">💨</div>
-    <div class="label">Khí gas</div>
+  <div class="card dust">
+    <div class="icon-wrap">🌫️</div>
+    <div class="label">Mật độ bụi</div>
     <div class="value-row">
-      <div class="value loading" id="val-gas">--</div>
-      <div class="unit">kΩ</div>
+      <div class="value loading" id="val-dust">--</div>
+      <div class="unit">mg/m³</div>
+    </div>
+  </div>
+
+  <!-- Ô thứ 5: Chất lượng không khí -->
+  <div class="card-air" id="card-air">
+    <div class="air-left">
+      <div class="air-label">Chất lượng không khí</div>
+      <div class="air-value loading" id="val-gas">--</div>
+    </div>
+    <div class="air-right">
+      <div class="air-dots">
+        <div class="dot-row"><span>Tốt</span><div class="dot" id="dot-tot"></div></div>
+        <div class="dot-row"><span>Trung bình</span><div class="dot" id="dot-tb"></div></div>
+        <div class="dot-row"><span>Kém</span><div class="dot" id="dot-kem"></div></div>
+      </div>
+      <div class="air-icon-wrap" id="air-icon">💨</div>
     </div>
   </div>
 </div>
@@ -157,6 +228,45 @@ function updateVal(id, raw) {
   }
 }
 
+function updateAirQuality(val) {
+  if (!val) return;
+
+  // Map giá trị từ Firebase sang class CSS (không dấu, không khoảng trắng)
+  const map = {
+    'Tot': { label: 'Tốt', cls: 'Tot', icon: '🌿' },
+    'Trung binh': { label: 'Trung bình', cls: 'Trung-binh', icon: '😐' },
+    'Kem': { label: 'Kém', cls: 'Kem', icon: '⚠️' },
+  };
+
+  const info = map[val] || { label: val, cls: 'Tot', icon: '💨' };
+
+  const elVal   = document.getElementById('val-gas');
+  const elCard  = document.getElementById('card-air');
+  const elIcon  = document.getElementById('air-icon');
+  const dotTot  = document.getElementById('dot-tot');
+  const dotTb   = document.getElementById('dot-tb');
+  const dotKem  = document.getElementById('dot-kem');
+
+  elVal.classList.remove('loading', 'Tot', 'Trung-binh', 'Kem', 'updated');
+  elCard.classList.remove('Tot', 'Trung-binh', 'Kem');
+  elIcon.classList.remove('Tot', 'Trung-binh', 'Kem');
+  dotTot.className = 'dot';
+  dotTb.className  = 'dot';
+  dotKem.className = 'dot';
+
+  void elVal.offsetWidth;
+
+  elVal.textContent = info.label;
+  elVal.classList.add(info.cls, 'updated');
+  elCard.classList.add(info.cls);
+  elIcon.classList.add(info.cls);
+  elIcon.textContent = info.icon;
+
+  if (info.cls === 'Tot')        dotTot.className = 'dot active-tot';
+  else if (info.cls === 'Trung-binh') dotTb.className  = 'dot active-tb';
+  else if (info.cls === 'Kem')   dotKem.className = 'dot active-kem';
+}
+
 onValue(ref(db, '/sensor'), snap => {
   const d = snap.val();
   if (!d) return;
@@ -164,7 +274,8 @@ onValue(ref(db, '/sensor'), snap => {
   updateVal('val-temp',  d.temp);
   updateVal('val-hum',   d.hum);
   updateVal('val-press', d.press);
-  updateVal('val-gas',   d.gas);
+  updateVal('val-dust',  d.dust);
+  updateAirQuality(d.gas);
 
   updateCount++;
   const now = new Date().toLocaleTimeString('vi-VN');
